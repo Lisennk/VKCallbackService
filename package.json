@@ -1,0 +1,18 @@
+{
+  "name": "VKCallbackService",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "HaselLoyance",
+  "license": "ISC",
+  "dependencies": {
+    "bull": "^3.0.0-rc.2",
+    "vk-io": "^3.1.6"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.3.0"
+  }
+}

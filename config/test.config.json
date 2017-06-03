@@ -1,0 +1,16 @@
+{
+    "appName": "Callback",
+    "appWorkers": 1,
+    "eventsQueue": "CallbackEventsProcessor",
+    "web": {
+        "port": 8001,
+        "ip": "0.0.0.0"
+    },
+    "redis": {
+        "ip": "127.0.0.1",
+        "port": 6379,
+        "options": {
+            "password": ""
+        }
+    }
+}
