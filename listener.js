@@ -26,14 +26,14 @@ http.createServer((request, response) => {
                 let queryData = {};
                 let eventData = {};
                 try {
-                    queryData = JSON.parse(Buffer.from(url.parse(request.url,true).query.params, 'base64'));
+                    queryData = JSON.parse(decodeURIComponent(Buffer.from(url.parse(request.url,true).query.params, 'base64')));
                     eventData = JSON.parse(body);
 
                     log.info('queryData:', queryData, '\neventData', eventData);
-                    response.writeHead(200, {});
 
                     if (eventData.type === 'confirmation') {
-                        log.info('Sent confirmation string from eventData');
+                        log.info('Sent confirmation string from queryData');
+                        response.writeHead(200, { 'Content-type':'text/plain' });
                         return response.end(queryData.confirmation);
                     } else if (eventData.secret === queryData.secret && eventData.group_id === queryData.group_id) {
                         log.info('Secret and group_id for event match');
@@ -44,23 +44,30 @@ http.createServer((request, response) => {
                             removeOnComplete: true,
                             removeOnFail: true,
                         });
+                       response.writeHead(200, {});
+                       response.end('OK');
                     } else {
                         log.info('Secret and group_id for event do not match');
-                    }
+                        response.writeHead(400, {});
+                        return response.end('BAD');
+                    }                
                 } catch (e) {
                     log.info('Couldn\'t extract query data');
-                    response.writeHead(404, {});
+                    response.writeHead(400, {});
+                    return response.end('BAD');
                 }
+                break;
 
             case '/generate': 
-                return fs.createReadStream('generate.html').pipe(response);
+                return fs.readFile('generate.html', (error, data) => {
+                   response.writeHead(200, { 'Content-type':'text/html' });
+                   response.end(data);
+                });
 
             default: 
-                response.writeHead(301, {
-                    Location: 'https://vk.com/liskabots'
-                });
+                response.writeHead(400, {});
+                return response.end('BAD');
         }
-        return response.end();
     });
 
 }).listen(config.web.port, config.web.ip);

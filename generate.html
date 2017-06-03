@@ -2,19 +2,93 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>LepraBot - авторизация</title>
-    <link href="/css/main.css" rel="stylesheet">
-
-    <script src="/js/zepto.min.js"></script>
-    <script src="/js/zepto.cookie.min.js"></script>
-    <script src="/js/login.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VKCallbackService - Генератор</title>
+    <style>
+      * {
+        padding:0;
+        margin:0;
+        font-family: Arial;
+        color:white;
+      }
+      body, html {
+        white-space: nowrap;
+        height:100%;
+        overflow-x:hidden;
+        background-color: #232323;
+      }
+      .generatorForm
+      {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        -webkit-box-align:center;
+        -webkit-box-pack:center;
+        display:-webkit-box;
+        background-color: #e96e33;
+        width: calc(120px + 100vmax / 12 * 1.6);
+        margin:0 auto;
+        padding:6%;
+        min-width: 400px;
+      }
+      input 
+      {
+        min-height:25px;
+        margin:calc(4px + 0.7vmax);
+        background-color: #232323;
+        font-size:calc(8px + 1.2vmin);
+        border:0;
+        outline: none;
+        transition: 0.3s;
+        display:block;
+        border-radius:0.2vmax;
+        -webkit-appearance: none;
+      }
+      .inputField {
+        width: calc(120px + 100vmax / 12);
+        padding:0.8vmax 2vmax 0.8vmax 2vmax;
+      }
+      .inputField:hover, .inputField:focus {
+        background-color: #4f4f4f;
+      }
+      .greenButton {
+        width: calc(120px + 100vmax / 12 + 4vmax);
+        background-color: #2c6c25;
+        font-weight:bold !important;
+        cursor:pointer;
+      }
+      .greenButton:hover, .greenButton:focus {
+        background-color: #2d7f25;
+      }
+    </style>
+    <script>
+      window.onload = function() {
+        document.getElementById('genForm').onsubmit = function() {
+          document.getElementsByName('callbackUrl')[0].value = location.origin + '/catch?params=' + btoa(encodeURIComponent(
+              '{"group_id":' + document.getElementsByName('group_id')[0].value + ',' +
+              '"confirmation":"' + document.getElementsByName('confirmation')[0].value + '",' +
+              '"token":"' + document.getElementsByName('token')[0].value + '",' +
+              '"group_join":"' + document.getElementsByName('group_join')[0].value + '",' +
+              '"group_leave":"' + document.getElementsByName('group_leave')[0].value + '",' +
+              '"wall_repost":"' + document.getElementsByName('wall_repost')[0].value + '",' +
+              '"secret":"' + document.getElementsByName('secret')[0].value + '"}'));
+          return false;
+        }
+      }
+    </script>
 </head>
 <body>
-  <div class="loginForm">
-    <form>
-      <input type="text" placeholder="Логин" id="loginNameField" />
-      <input type="password" placeholder="Пароль" id="passwordField"/>
-      <input type="button" value="Войти" id="formLogin">
+  <div class="generatorForm">
+    <form id="genForm">
+      <input type="text" name="group_id" placeholder="Айди" class="inputField">
+      <input type="text" name="confirmation" placeholder="Ответная строка" class="inputField">
+      <input type="text" name="secret" placeholder="Секретный ключ" class="inputField">
+      <input type="text" name="token" placeholder="Токен" class="inputField">
+      <input type="text" name="group_join" placeholder="Сообщение на group_join" class="inputField">
+      <input type="text" name="group_leave" placeholder="Сообщение на group_leave" class="inputField">
+      <input type="text" name="wall_repost" placeholder="Сообщение на wall_repost" class="inputField">
+      <input type="submit" name="submit" value="Сгенерировать" class="inputField greenButton">
+      <input type="text" name="callbackUrl" placeholder="Ссылка" class="inputField" disabled>
     </form>
   </div>
 </body>
